@@ -1,0 +1,1196 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ================= إعدادات الـ SEO والمشاركة العالمية ================= -->
+    <title>جويرية تك | منصة الوعي السيبراني المتقدمة</title>
+    <meta name="description" content="[مهمة سرية] اصعد لقطار جويرية تك! رحلة تفاعلية استثنائية تكشف فخوخ الألعاب الإلكترونية وتمنحك درعاً سيبرانياً. هل أنت مستعد للتحدي؟">
+    <meta name="keywords" content="وعي رقمي, أمن سيبراني, جويرية تك, محمود محمد عبد الوهاب عيسى, تعليم تفاعلي, ميت غمر">
+    <meta name="author" content="محمود محمد عبد الوهاب عيسى">
+    <meta name="theme-color" content="#00d2ff">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🚨 المهمة السرية: منصة جويرية تك للإنقاذ الرقمي 🛡️">
+    <meta property="og:description" content="🔥 هل تملك الشجاعة لإنقاذ عقلك من فخ الإدمان؟ 12 محطة تفاعلية تحبس الأنفاس وتمنحك درعاً سيبرانياً من تطوير محمود محمد عبد الوهاب عيسى. [اضغط لتبدأ التحدي]">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* ================= المتغيرات والألوان ================= */
+        :root {
+            --primary-bg: #01040a;
+            --glass-bg: rgba(6, 17, 33, 0.65);
+            --glass-border: rgba(0, 210, 255, 0.25);
+            --neon-cyan: #00d2ff;
+            --deep-blue: #0056b3;
+            --alert-red: #ff2a5f;
+            --success-green: #00e676;
+            --gold-coin: #ffea00;
+            --accent-glow: 0 0 20px rgba(0, 210, 255, 0.6);
+            --text-main: #e2f1f8;
+            --hud-font: 'Tajawal', sans-serif;
+            --sim-blur: 0px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; scroll-behavior: smooth; cursor: none; }
+        body { background-color: var(--primary-bg); color: var(--text-main); overflow-x: hidden; filter: blur(var(--sim-blur)); transition: filter 0.5s; }
+        
+        #preloader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--primary-bg); z-index: 9999999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease; }
+        .loader-ring { width: 80px; height: 80px; border: 4px solid rgba(0, 210, 255, 0.1); border-left-color: var(--neon-cyan); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; box-shadow: var(--accent-glow); }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .cursor-dot { width: 8px; height: 8px; background: var(--neon-cyan); border-radius: 50%; position: fixed; pointer-events: none; z-index: 100000; box-shadow: var(--accent-glow); transition: transform 0.1s; }
+        .cursor-ring { width: 40px; height: 40px; border: 2px solid var(--neon-cyan); border-radius: 50%; position: fixed; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: 0.15s ease-out; opacity: 0.7; }
+
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; background: #01040a; }
+        .warp-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, transparent 10%, #01040a 100%); z-index: -1; opacity: 0; transition: 0.5s; pointer-events: none; }
+
+        .top-controls { position: fixed; top: 80px; left: 20px; z-index: 1001; display: flex; gap: 10px; }
+        .ctrl-btn { background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: var(--neon-cyan); width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; cursor: pointer; transition: 0.3s; backdrop-filter: blur(5px); }
+        .ctrl-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: var(--accent-glow); }
+        .sync-status { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.6); border: 1px solid var(--glass-border); padding: 5px 15px; border-radius: 30px; font-size: 0.9rem; color: #aaa; backdrop-filter: blur(5px); }
+        .sync-dot { width: 10px; height: 10px; border-radius: 50%; background: #aaa; transition: 0.3s; }
+        .sync-dot.online { background: var(--success-green); box-shadow: 0 0 10px var(--success-green); }
+        .sync-dot.offline { background: var(--alert-red); box-shadow: 0 0 10px var(--alert-red); }
+        .sync-dot.syncing { background: var(--gold-coin); box-shadow: 0 0 10px var(--gold-coin); animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        #ticket-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        .boarding-pass { background: linear-gradient(135deg, rgba(10,25,47,0.95), rgba(0,86,179,0.95)); border: 2px dashed var(--neon-cyan); padding: 50px; border-radius: 15px; text-align: center; width: 95%; max-width: 550px; box-shadow: 0 0 50px rgba(0,210,255,0.2); position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .boarding-pass::before, .boarding-pass::after { content: ''; position: absolute; top: 50%; width: 50px; height: 50px; background: #000; border-radius: 50%; transform: translateY(-50%); }
+        .boarding-pass::before { left: -25px; border-right: 2px dashed var(--neon-cyan); }
+        .boarding-pass::after { right: -25px; border-left: 2px dashed var(--neon-cyan); }
+        .pass-input { width: 85%; padding: 18px; margin: 25px 0; background: rgba(0,0,0,0.6); border: 1px solid var(--neon-cyan); color: #fff; font-size: 1.3rem; text-align: center; border-radius: 8px; outline: none; transition: 0.3s; }
+        .pass-input:focus { box-shadow: var(--accent-glow); }
+
+        /* ================= ستايل النوافذ المنبثقة الاحترافية (Cyber Modals) ================= */
+        #cyber-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(15px); z-index: 99999999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #cyber-modal-box { background: var(--glass-bg); border: 2px solid var(--neon-cyan); box-shadow: 0 0 50px rgba(0, 210, 255, 0.2), inset 0 0 20px rgba(0, 210, 255, 0.05); border-radius: 15px; padding: 45px 30px; text-align: center; max-width: 480px; width: 90%; transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        #cyber-modal-box::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 3px; background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent); animation: scanline 2.5s infinite linear; }
+        @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
+        #cyber-modal-icon { font-size: 4rem; color: var(--neon-cyan); margin-bottom: 25px; text-shadow: var(--accent-glow); animation: pulseTrap 2s infinite; }
+        #cyber-modal-title { font-size: 2rem; margin-bottom: 15px; color: #fff; font-family: var(--hud-font); letter-spacing: 1px; }
+        #cyber-modal-msg { font-size: 1.1rem; color: #b0bec5; margin-bottom: 30px; line-height: 1.7; }
+        .modal-btn-row { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 2%; background: rgba(1, 4, 10, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .logo { font-family: var(--hud-font); font-size: 1.6rem; font-weight: 900; color: var(--neon-cyan); text-shadow: var(--accent-glow); display: flex; align-items: center; gap: 8px; white-space: nowrap; margin-left: 20px; }
+        .logo-en { font-family: monospace; font-size: 0.9rem; letter-spacing: 1.5px; color: #8892b0; margin-right: 8px; font-weight: 600; text-shadow: none; }
+        
+        .train-track { display: flex; gap: 20px; position: relative; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding: 10px 5px; flex: 1; mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent); }
+        .train-track::-webkit-scrollbar { display: none; }
+        .train-track::before { content: ''; position: absolute; top: 50%; left: 0; width: 200%; height: 2px; background: rgba(0,210,255,0.2); z-index: -1; transform: translateY(-50%); border-top: 2px dotted var(--neon-cyan); }
+        .station-link { color: #8892b0; text-decoration: none; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: 0.3s; font-size: 0.8rem; min-width: 75px; white-space: nowrap; }
+        .station-link i { background: #01040a; border: 2px solid #333; border-radius: 50%; padding: 10px; font-size: 1.1rem; transition: 0.3s; position: relative; z-index: 2; }
+        .station-link:hover { color: #fff; }
+        .station-link:hover i, .station-link.active i { background: var(--neon-cyan); color: #000; box-shadow: var(--accent-glow); border-color: var(--neon-cyan); transform: scale(1.15); }
+        .station-link.active { color: var(--neon-cyan); }
+
+        main { padding-top: 140px; min-height: 100vh; display: flex; justify-content: center; padding-bottom: 60px; }
+        .page-section { display: none; width: 95%; max-width: 1400px; animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .page-section.active { display: block; }
+        @keyframes scaleIn { 0% { opacity: 0; transform: scale(0.95) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 45px; box-shadow: 0 15px 45px rgba(0,0,0,0.7), inset 0 0 20px rgba(0,210,255,0.05); margin-bottom: 30px; position: relative; }
+        .section-title { font-family: var(--hud-font); font-size: 2.8rem; text-align: center; margin-bottom: 35px; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .section-title span { color: var(--neon-cyan); text-shadow: var(--accent-glow); }
+
+        .btn-cyber { background: rgba(0, 210, 255, 0.05); color: var(--neon-cyan); border: 2px solid var(--neon-cyan); padding: 15px 35px; font-size: 1.2rem; font-weight: 900; border-radius: 8px; transition: 0.4s; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; font-family: var(--hud-font); letter-spacing: 1px; position: relative; overflow: hidden; }
+        .btn-cyber::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,210,255,0.4), transparent); transition: 0.5s; }
+        .btn-cyber:hover::before { left: 100%; }
+        .btn-cyber:hover { background: var(--neon-cyan); color: #000; box-shadow: var(--accent-glow); transform: translateY(-3px); }
+
+        .tilt-card { transform-style: preserve-3d; transition: transform 0.1s ease-out; perspective: 1000px; }
+        .tilt-content { transform: translateZ(30px); }
+
+        .admin-header { background: linear-gradient(90deg, transparent, rgba(0,210,255,0.2), transparent); padding: 15px; text-align: center; font-size: 1.6rem; font-weight: 900; color: #fff; border-bottom: 2px solid var(--neon-cyan); margin-bottom: 40px; letter-spacing: 1px; text-shadow: var(--accent-glow); }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 50px; align-items: center; }
+        .hero-text h1 { font-size: 4.5rem; background: linear-gradient(135deg, #fff, var(--neon-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; font-family: var(--hud-font); line-height: 1.1; }
+        
+        .creator-badge { background: linear-gradient(135deg, rgba(0,86,179,0.3), rgba(0,210,255,0.1)); border: 1px solid var(--neon-cyan); border-radius: 15px; padding: 35px; text-align: center; margin-bottom: 25px; box-shadow: inset 0 0 30px rgba(0,210,255,0.1); }
+        .school-tag { display: inline-block; background: rgba(0,0,0,0.6); border: 1px dashed var(--neon-cyan); padding: 10px 25px; border-radius: 30px; color: var(--neon-cyan); font-weight: 900; margin-top: 15px; font-size: 1.1rem; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; text-align: center; }
+        .team-member { background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; color: #ccc; }
+        .team-member:hover { border-color: var(--neon-cyan); background: rgba(0,210,255,0.1); color: #fff; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+
+        .fact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .fact-card { background: rgba(0,0,0,0.6); border-right: 4px solid var(--alert-red); padding: 30px; border-radius: 12px; transition: 0.3s; position: relative; overflow: hidden; border-left: 1px solid rgba(255,255,255,0.05); }
+        .fact-card.green { border-right-color: var(--success-green); }
+        .fact-card.cyan { border-right-color: var(--neon-cyan); }
+        .fact-card.gold { border-right-color: var(--gold-coin); }
+
+        .dopamine-sim { display: flex; gap: 50px; align-items: center; justify-content: center; flex-wrap: wrap; }
+        .brain-visual { position: relative; width: 220px; height: 220px; display: flex; justify-content: center; align-items: center; }
+        .brain-visual i { font-size: 13rem; color: rgba(255,255,255,0.05); transition: 0.5s; }
+        .brain-visual.spike i { color: var(--alert-red); text-shadow: 0 0 40px var(--alert-red); animation: shake 0.3s; }
+        .brain-visual.steady i { color: var(--success-green); text-shadow: 0 0 40px var(--success-green); }
+        .dopamine-controls { display: flex; flex-direction: column; gap: 15px; width: 350px; }
+
+        .terminal-box { background: #050505; border: 1px solid #333; border-top: 25px solid #222; border-radius: 10px; width: 100%; max-width: 800px; margin: 0 auto; padding: 20px; font-family: monospace; color: #0f0; min-height: 300px; text-align: left; direction: ltr; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,255,0,0.1); position: relative; }
+        .terminal-box::before { content: 'root@juwairiya-tech:~'; position: absolute; top: -20px; left: 10px; color: #aaa; font-size: 0.8rem; font-family: sans-serif; }
+
+        .cyber-trap-box { background: #0a0a0a; border: 1px solid #333; padding: 25px; border-radius: 15px; width: 100%; max-width: 450px; margin: 0 auto; text-align: center; position: relative; overflow: hidden; }
+        .trap-chat { text-align: right; background: #1a1a1a; padding: 15px; border-radius: 10px; margin-bottom: 20px; color: #ccc; font-size: 1rem; border-right: 3px solid #ff9900; }
+        .trap-btn { background: linear-gradient(45deg, #ff0055, #ff9900); color: #fff; border: none; padding: 18px; width: 100%; font-size: 1.3rem; font-weight: 900; border-radius: 10px; cursor: pointer; animation: pulseTrap 1.5s infinite; }
+        .hacked-screen { position: absolute; top:0; left:0; width:100%; height:100%; background: #000; color:#fff; display:none; flex-direction:column; justify-content:center; align-items:center; z-index:10; font-weight:900; font-size:1.5rem; text-align: center; padding: 20px; }
+        @keyframes pulseTrap { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
+
+        .shield-arena { position: relative; width: 100%; height: 400px; background: rgba(0,0,0,0.4); border: 2px dashed #444; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 20px; }
+        .toxic-msg { position: absolute; top: -50px; background: var(--alert-red); color: #fff; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 1.1rem; opacity: 0.9; transition: top 3s linear; }
+        .force-field { position: absolute; bottom: 80px; width: 200px; height: 100px; border-top-left-radius: 100px; border-top-right-radius: 100px; background: radial-gradient(circle at bottom, rgba(0,210,255,0.4), transparent); border-top: 4px solid var(--neon-cyan); box-shadow: 0 -10px 30px rgba(0,210,255,0.3); display: none; }
+
+        .story-screen { background: #000; border: 2px solid var(--neon-cyan); border-radius: 15px; padding: 50px; min-height: 280px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; box-shadow: inset 0 0 30px rgba(0,210,255,0.1); }
+        .story-text { font-size: 1.8rem; line-height: 1.6; margin-bottom: 30px; min-height: 80px; } 
+        
+        .analyzer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .chart-box { background: rgba(0,0,0,0.6); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .svg-timer-container { position: relative; width: 220px; height: 220px; margin: 0 auto; display: flex; justify-content: center; align-items: center; }
+        .svg-timer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        .svg-timer circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+        .svg-timer-bg { stroke: rgba(255,255,255,0.1); }
+        .svg-timer-progress { stroke: var(--success-green); stroke-dasharray: 628; stroke-dashoffset: 628; transition: stroke-dashoffset 1s linear; filter: drop-shadow(0 0 10px var(--success-green)); }
+        .timer-text { font-size: 3rem; font-family: monospace; font-weight: bold; color: var(--success-green); position: relative; z-index: 2; text-shadow: 0 0 15px var(--success-green); }
+
+        .oath-box { text-align: center; max-width: 700px; margin: 0 auto; }
+        .oath-text { font-size: 1.4rem; line-height: 1.8; color: #ddd; margin-bottom: 40px; text-align: justify; padding: 20px; background: rgba(0,0,0,0.3); border-right: 4px solid var(--neon-cyan); }
+        .fingerprint-scanner { width: 100px; height: 120px; margin: 0 auto; border: 2px solid rgba(0,210,255,0.3); border-radius: 30px; position: relative; overflow: hidden; cursor: pointer; transition: 0.3s; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,210,255,0.1)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-14h2v6h-2zm0 8h2v2h-2z"/></svg>') center/cover; }
+        .fingerprint-scanner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); animation: scan 2s infinite linear; }
+        .fingerprint-scanner:hover, .fingerprint-scanner.scanned { background-color: rgba(0,210,255,0.2); border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0,210,255,0.4); }
+
+        .cert-container { width: 100%; max-width: 950px; aspect-ratio: 1.414 / 1; background: #fff; position: relative; padding: 4%; display: none; flex-direction: column; justify-content: space-between; color: #111; border: 15px solid #0a192f; outline: 4px solid var(--neon-cyan); outline-offset: -12px; margin: 0 auto; background-image: radial-gradient(circle at center, rgba(0,210,255,0.03) 0%, transparent 80%); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        .cert-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 5rem; color: rgba(0,0,0,0.04); font-weight: 900; z-index: 1; pointer-events: none; text-align: center; width: 100%; }
+        .cert-header { text-align: center; z-index: 2; border-bottom: 2px solid #ccc; padding-bottom: 15px; }
+        .cert-body { text-align: center; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .cert-name-box { padding: 10px; border-bottom: 3px dashed #b30000; display: inline-block; margin: 15px auto; min-width: 60%; }
+        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; z-index: 2; padding: 0 20px; }
+        .signature-line { border-top: 2px solid #111; margin-bottom: 5px; padding-top: 5px; width: 250px; text-align: center; }
+        .gold-seal { width: 130px; height: 130px; background: linear-gradient(135deg, #ffd700, #b8860b); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 3px dashed #fff; box-shadow: 0 0 20px rgba(218,165,32,0.6); color: #fff; font-weight: 900; font-size: 1.1rem; text-align: center; z-index: 5; }
+
+        .admin-dashboard table { width: 100%; border-collapse: collapse; margin-top: 20px; color: #fff; }
+        .admin-dashboard th, .admin-dashboard td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; }
+        .admin-dashboard th { background: rgba(0, 210, 255, 0.1); color: var(--neon-cyan); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); }
+        .admin-toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.4); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .toolbar-group { display: flex; gap: 10px; }
+        .search-input { padding: 10px 15px; border-radius: 5px; border: 1px solid var(--neon-cyan); background: rgba(0,0,0,0.6); color: #fff; outline: none; flex-grow: 1; min-width: 200px; }
+        .search-input:focus { box-shadow: var(--accent-glow); }
+        .action-btn { background: transparent; border: 1px solid #555; color: #ccc; padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: 0.3s; margin: 0 2px; }
+        .action-btn:hover { background: #333; color: #fff; }
+        .btn-edit:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
+        .btn-delete:hover { border-color: var(--alert-red); color: var(--alert-red); }
+        .btn-toggle:hover { border-color: var(--success-green); color: var(--success-green); }
+        .table-container { overflow-x: auto; max-height: 400px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
+        .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
+        .table-container::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+
+        /* ================= الفوتر (المرفق بتدرجات الأزرق والسماوي) ================= */
+        .footer-wrapper {
+            padding: 80px 20px; 
+            background: rgba(2, 5, 10, 0.98); 
+            border-top: 3px solid var(--neon-cyan); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            margin-top: auto;
+            position: relative; 
+            overflow: hidden; 
+            height: 550px; 
+            flex-shrink: 0; 
+            box-shadow: 0 -15px 50px rgba(0, 210, 255, 0.15);
+        }
+        .circle-container { 
+            position: relative; 
+            width: 480px; 
+            height: 480px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+        }
+        .rotating-svg { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            animation: rotateText 22s linear infinite; 
+            z-index: 2; 
+        }
+        @keyframes rotateText { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        .text-path-style { 
+            font-size: 20px; 
+            fill: #ffffff; 
+            font-family: 'Arial Black', Impact, sans-serif; 
+            letter-spacing: 6px; 
+            filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.9)); 
+        }
+        .name-highlight { 
+            font-size: 28px; 
+            font-weight: 900; 
+            fill: var(--neon-cyan); 
+            letter-spacing: 4px; 
+            text-transform: uppercase; 
+        }
+        .center-prayer {
+            position: relative; 
+            width: 340px; 
+            text-align: center; 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            color: var(--neon-cyan); 
+            line-height: 1.8; 
+            z-index: 10;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+            text-shadow: 0 1px 0 #0099cc, 0 2px 0 #007399, 0 3px 0 #004d66, 0 4px 0 #00334d, 0 5px 0 #001a26, 0 10px 20px rgba(0,0,0,0.9), 0 0 40px rgba(0, 210, 255, 0.4);
+        }
+        .center-prayer::before { 
+            content: "🦅"; 
+            font-size: 2.2rem; 
+            margin-bottom: 15px; 
+            opacity: 0.95; 
+            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.4)); 
+        }
+        .center-prayer::after { 
+            content: "🦅"; 
+            font-size: 2.2rem; 
+            margin-top: 15px; 
+            opacity: 0.95; 
+            filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.4)); 
+            transform: scaleX(-1); 
+        }
+
+        /* إشعارات */
+        #toast-container { position: fixed; bottom: 40px; right: 40px; z-index: 100000; display: flex; flex-direction: column; gap: 15px; }
+        .smart-toast { background: rgba(10, 25, 47, 0.95); border-right: 5px solid var(--neon-cyan); padding: 18px 25px; color: #fff; border-radius: 8px; font-weight: 700; animation: slideIn 0.5s forwards; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 15px; font-size: 1.1rem; }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    </style>
+</head>
+<body onload="hidePreloader()">
+
+    <div id="preloader">
+        <div class="loader-ring"></div>
+        <h2 style="color: var(--neon-cyan); font-family: var(--hud-font); letter-spacing: 2px;">جاري تهيئة النظام...</h2>
+    </div>
+
+    <!-- حاوية النوافذ المنبثقة التفاعلية (Cyber Modal) -->
+    <div id="cyber-modal-overlay">
+        <div id="cyber-modal-box">
+            <i id="cyber-modal-icon" class="fa-solid fa-circle-exclamation"></i>
+            <h3 id="cyber-modal-title">تنبيه</h3>
+            <p id="cyber-modal-msg"></p>
+            <input type="text" id="cyber-modal-input" class="pass-input" style="display:none; width:100%; margin-bottom:25px; border-color:var(--neon-cyan);" placeholder="اكتب هنا...">
+            <div class="modal-btn-row">
+                <button id="cyber-modal-btn-confirm" class="btn-cyber" style="flex:1; justify-content:center;">تأكيد <i class="fa-solid fa-check"></i></button>
+                <button id="cyber-modal-btn-cancel" class="btn-cyber" style="flex:1; justify-content:center; border-color:var(--alert-red); color:var(--alert-red); display:none;">إلغاء <i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="top-controls">
+        <button class="ctrl-btn" id="audio-toggle" onclick="toggleAudio()" title="تشغيل/إيقاف الصوت"><i class="fa-solid fa-volume-high"></i></button>
+        <div class="sync-status" title="حالة الاتصال بقاعدة البيانات">
+            <div class="sync-dot" id="sync-dot"></div>
+            <span id="sync-text">جاري الاتصال...</span>
+        </div>
+    </div>
+
+    <div id="ticket-modal">
+        <div class="boarding-pass tilt-card">
+            <div class="tilt-content">
+                <h2 style="color: var(--neon-cyan); margin-bottom: 10px; font-size: 2.5rem;"><i class="fa-solid fa-microchip"></i> جويرية تك <span style="font-size: 1rem; color: #8892b0;">| Juwairiya Tech</span></h2>
+                <p style="font-size: 1.2rem; color: #ccc;">منصة الوعي الرقمي برعاية إدارة ميت غمر التعليمية</p>
+                <input type="text" id="passenger-name" class="pass-input" placeholder="الاسم الثلاثي للراكب...">
+                <button class="btn-cyber" style="width: 80%; justify-content: center;" onclick="boardTrain()">تأكيد التذكرة وبدء الرحلة <i class="fa-solid fa-ticket"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cursor-dot" id="cursor-dot"></div><div class="cursor-ring" id="cursor-ring"></div>
+    <div id="canvas-container"><canvas id="trainCanvas"></canvas><div class="warp-overlay" id="warp-overlay"></div></div>
+
+    <nav>
+        <div class="logo"><i class="fa-solid fa-shield-halved"></i> جويرية تك <span class="logo-en">| JUWAIRIYA TECH</span></div>
+        <div class="train-track" id="main-track">
+            <a href="#" class="station-link active" onclick="nav('station-1', 'الانطلاق')"><i class="fa-solid fa-house"></i><span>1. الانطلاق</span></a>
+            <a href="#" class="station-link" onclick="nav('station-2', 'التوعية')"><i class="fa-solid fa-globe"></i><span>2. التوعية</span></a>
+            <a href="#" class="station-link" onclick="nav('station-3', 'الدوبامين')"><i class="fa-solid fa-flask"></i><span>3. الدوبامين</span></a>
+            <a href="#" class="station-link" onclick="nav('station-4', 'الويب المظلم')"><i class="fa-solid fa-user-secret"></i><span>4. الخصوصية</span></a>
+            <a href="#" class="station-link" onclick="nav('station-5', 'الفخوخ')"><i class="fa-solid fa-spider"></i><span>5. الفخوخ</span></a>
+            <a href="#" class="station-link" onclick="nav('station-6', 'الدرع')"><i class="fa-solid fa-shield"></i><span>6. التنمر</span></a>
+            <a href="#" class="station-link" onclick="nav('station-7', 'المحاكاة')"><i class="fa-solid fa-vr-cardboard"></i><span>7. المحاكاة</span></a>
+            <a href="#" class="station-link" onclick="nav('station-8', 'الفحص')"><i class="fa-solid fa-brain"></i><span>8. الفحص</span></a>
+            <a href="#" class="station-link" onclick="nav('station-9', 'الخوارزميات')"><i class="fa-solid fa-eye-slash"></i><span>9. الخوارزميات</span></a>
+            <a href="#" class="station-link" onclick="nav('station-10', 'الهندسة')"><i class="fa-solid fa-masks-theater"></i><span>10. الهندسة</span></a>
+            <a href="#" class="station-link" onclick="nav('station-11', 'الميثاق')"><i class="fa-solid fa-fingerprint"></i><span>11. الميثاق</span></a>
+            <a href="#" class="station-link" onclick="nav('station-12', 'التتويج')"><i class="fa-solid fa-award"></i><span>12. الاعتماد</span></a>
+            <a href="#" class="station-link" onclick="nav('station-admin', 'الإدارة')"><i class="fa-solid fa-server"></i><span>13. الإحصائيات</span></a>
+        </div>
+    </nav>
+
+    <div id="toast-container"></div>
+
+    <main>
+        <section id="station-1" class="page-section active">
+            <div class="glass-panel">
+                <div class="admin-header"><i class="fa-solid fa-landmark"></i> إدارة ميت غمر التعليمية - التعليم الثانوي</div>
+                <div class="hero-grid">
+                    <div class="hero-text">
+                        <h1>المنصة المركزية <br>للعقول الرقمية</h1>
+                        <p style="font-size: 1.2rem; margin-bottom: 30px; color: #b0bec5;">مرحباً بك في أحدث منصة تفاعلية للوعي السيبراني من <strong>جويرية تك | Juwairiya Tech</strong>. 12 محطة تفصلك عن امتلاك درع الوعي الرقمي، هل أنت مستعد؟</p>
+                        <button class="btn-cyber" onclick="nav('station-2', 'التوعية العالمية')">ابدأ الرحلة الآن <i class="fa-solid fa-forward"></i></button>
+                    </div>
+                    <div class="elite-roster">
+                        <div class="creator-badge tilt-card">
+                            <div class="tilt-content">
+                                <h4 style="color: #ccc; letter-spacing: 2px; margin-bottom: 10px;">الهندسة والتطوير</h4>
+                                <h2 style="font-size: 1.7rem;">محمود محمد عبد الوهاب عيسى</h2>
+                                <p style="color: var(--neon-cyan); font-weight: bold; font-size: 1.1rem;">خبير الهندرة والأمن السيبراني</p>
+                                <div class="school-tag"><i class="fa-solid fa-school"></i> مدرسة محمد هاشم النقيب الثانوية المشتركة</div>
+                            </div>
+                        </div>
+                        <h4 style="text-align: center; margin-bottom: 15px; color: var(--neon-cyan); font-family: var(--hud-font);">الهيئة الإشرافية والتنسيق</h4>
+                        <div class="team-grid">
+                            <div class="team-member tilt-card"><div class="tilt-content">أ. نهلة محمد<br><small style="color:#aaa;">إشراف وتوجيه</small></div></div>
+                            <div class="team-member tilt-card"><div class="tilt-content">أ. رابحة أسامة<br><small style="color:#aaa;">تحليل سلوكي</small></div></div>
+                            <div class="team-member tilt-card"><div class="tilt-content">أ. نهله أسامه<br><small style="color:#aaa;">مراجعة علمية</small></div></div>
+                            <div class="team-member tilt-card"><div class="tilt-content">أ. غادة أحمد<br><small style="color:#aaa;">تنسيق إداري</small></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="station-2" class="page-section">
+            <h2 class="section-title">بيانات وحقائق <span>طبية عالمية</span></h2>
+            <div class="glass-panel fact-grid">
+                <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-virus"></i> التصنيف (ICD-11)</h3><p>صنفت منظمة الصحة العالمية (WHO) "اضطراب الألعاب" كمرض نفسي رسمي يستدعي العلاج التدريجي.</p></div></div>
+                <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-moon"></i> تدمير الميلاتونين</h3><p>الإشعاع الأزرق من الشاشات يدمر هرمون الميلاتونين، مما يسبب أرقاً واضطراباً خطيراً في الساعة البيولوجية.</p></div></div>
+                <div class="fact-card gold tilt-card"><div class="tilt-content"><h3 style="color: var(--gold-coin); margin-bottom: 10px;"><i class="fa-solid fa-person-walking-with-cane"></i> متلازمة النص الرقبي</h3><p>الجلوس المطول الخاطئ يؤدي إلى انحناء دائم للعمود الفقري (Text Neck) وضعف وهشاشة في عضلات الظهر.</p></div></div>
+                <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-eye-low-vision"></i> جفاف العين المزمن</h3><p>قلة الرمش أثناء التركيز الشديد في الألعاب تسبب جفافاً مزمناً في العين وإجهاداً رقمياً حاداً للرؤية.</p></div></div>
+                <div class="fact-card green tilt-card"><div class="tilt-content"><h3 style="color: var(--success-green); margin-bottom: 10px;"><i class="fa-solid fa-weight-scale"></i> خطر السمنة المفرطة</h3><p>الجلوس لفترات طويلة يوقف عمليات الأيض الطبيعية ويقلل من حرق السعرات، مما يزيد بشدة من خطر السمنة.</p></div></div>
+                <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-heart-pulse"></i> إرهاق الغدة الكظرية</h3><p>الألعاب التنافسية ترفع هرمون التوتر (الكورتيزول) بشكل مستمر، مما يؤدي لسرعة ضربات القلب والإرهاق الكظري.</p></div></div>
+                <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-brain"></i> انكماش المادة الرمادية</h3><p>تؤكد الدراسات أن إدمان الشاشات يؤدي إلى انكماش المادة الرمادية في الدماغ (المسؤولة عن التفكير المنطقي واتخاذ القرار).</p></div></div>
+                <div class="fact-card gold tilt-card"><div class="tilt-content"><h3 style="color: var(--gold-coin); margin-bottom: 10px;"><i class="fa-solid fa-hand-dots"></i> متلازمة النفق الرسغي</h3><p>حركات الماوس المتكررة والضغط المستمر تسبب التهاباً في الأوتار وتضرراً في أعصاب اليدين.</p></div></div>
+                <div class="fact-card green tilt-card"><div class="tilt-content"><h3 style="color: var(--success-green); margin-bottom: 10px;"><i class="fa-solid fa-users-slash"></i> تدمير الذكاء العاطفي</h3><p>الاعتماد على العالم الافتراضي يضعف مهارات التواصل الاجتماعي الواقعي ويقلل من القدرة على قراءة تعابير الوجوه.</p></div></div>
+                <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-temperature-arrow-down"></i> تقلبات مزاجية عنيفة</h3><p>الارتفاعات والانخفاضات الحادة والسريعة في مستوى الدوبامين تسبب تقلبات مزاجية عنيفة واكتئاباً ملحوظاً.</p></div></div>
+                <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-ear-deaf"></i> تلف العصب السمعي</h3><p>استخدام سماعات الألعاب (Headsets) بصوت عالٍ لفترات طويلة يسبب طنيناً وتلفاً تدريجياً لا رجعة فيه في السمع.</p></div></div>
+                <div class="fact-card gold tilt-card"><div class="tilt-content"><h3 style="color: var(--gold-coin); margin-bottom: 10px;"><i class="fa-solid fa-bolt"></i> نوبات الصرع البصري</h3><p>الضوء الوامض وتغيرات الألوان السريعة في الألعاب قد تثير نوبات صرع لدى الأشخاص المصابين بالصرع الحساس للضوء.</p></div></div>
+                <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-shield-virus"></i> ضعف جهاز المناعة</h3><p>الألعاب التي تتطلب سهر ليالي طويلة تؤدي إلى ضعف ملحوظ في جهاز المناعة وتجعلك عرضة للأمراض بشكل أسرع.</p></div></div>
+                <div class="fact-card green tilt-card"><div class="tilt-content"><h3 style="color: var(--success-green); margin-bottom: 10px;"><i class="fa-solid fa-book-open"></i> ضعف الذاكرة العاملة</h3><p>الاستثارة المستمرة من الألعاب تقلل من قدرة الطالب على التركيز والانتباه في المهام الأكاديمية والمذاكرة.</p></div></div>
+                <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-person-praying"></i> العزلة والرهاب الاجتماعي</h3><p>العزلة الناتجة عن إدمان الألعاب ترفع معدلات القلق الاجتماعي وتخلق رهاباً حقيقياً من التجمعات والمواجهات الواقعية.</p></div></div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-3', 'كيمياء الدماغ')">المحطة 3: الدوبامين <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-3" class="page-section">
+            <h2 class="section-title">محاكي <span>كيمياء الدماغ (الدوبامين)</span></h2>
+            <div class="glass-panel">
+                <p style="text-align: center; margin-bottom: 40px; font-size: 1.2rem; color: #b0bec5;">اكتشف كيف تدمر الألعاب "نظام المكافأة" في دماغك.</p>
+                <div class="dopamine-sim">
+                    <div class="brain-visual" id="brain-visual"><i class="fa-solid fa-brain"></i></div>
+                    <div class="dopamine-controls">
+                        <button class="btn-cyber" style="border-color: var(--alert-red); color: var(--alert-red);" onclick="simulateDopamine('bad')"><i class="fa-solid fa-gamepad"></i> لعب مفرط (جرعة زائدة)</button>
+                        <button class="btn-cyber" style="border-color: var(--success-green); color: var(--success-green);" onclick="simulateDopamine('good')"><i class="fa-solid fa-book"></i> مذاكرة (إفراز طبيعي)</button>
+                        <div style="margin-top: 25px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;"><span>مستوى الدوبامين:</span> <span id="dopamine-level">مستقر</span></div>
+                            <div style="width: 100%; height: 15px; background: #222; border-radius: 10px; overflow: hidden; border: 1px solid #444;"><div id="dopamine-bar" style="width: 50%; height: 100%; background: var(--success-green); transition: 0.5s;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-4', 'الويب المظلم والخصوصية')">المحطة 4: الخصوصية <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-4" class="page-section">
+            <h2 class="section-title">فاحص <span>التسريبات (Dark Web)</span></h2>
+            <div class="glass-panel">
+                <p style="text-align: center; margin-bottom: 20px;">تسجيل الدخول للألعاب العشوائية يترك بصمتك الرقمية مكشوفة للقراصنة. اضغط لفحص بياناتك (محاكاة).</p>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="btn-cyber" onclick="startDataScan()"><i class="fa-solid fa-magnifying-glass"></i> فحص بصمتي الرقمية</button>
+                </div>
+                <div class="terminal-box" id="terminal-output">
+                    > WAITING FOR COMMAND...
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-5', 'الفخوخ السيبرانية')">المحطة 5: الفخوخ <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-5" class="page-section">
+            <h2 class="section-title">محاكي <span>الفخوخ السيبرانية</span></h2>
+            <div class="glass-panel">
+                <div class="cyber-trap-box" id="trap-box">
+                    <div class="trap-chat">اللاعب المجهول: "صديقي، اكتشفت ثغرة! ادخل هنا لتربح 10,000 جوهرة مجاناً!"</div>
+                    <button class="trap-btn" onclick="triggerTrap()">اضغط هنا لاستلام الجواهر 💎</button>
+                    
+                    <div class="hacked-screen" id="hacked-screen">
+                        <i class="fa-solid fa-skull-crossbones" style="font-size: 5rem; margin-bottom: 15px; color: #000; text-shadow: 0 0 10px #fff;"></i>
+                        <h2 style="font-size: 2.5rem; margin-bottom: 10px;">لقد تم اختراقك!</h2>
+                        <p style="font-size: 1.1rem; font-weight: normal; margin-top: 10px; padding: 0 20px; line-height: 1.6;">هذا ما يحدث عندما تضغط على الروابط الوهمية. الكاميرا تُفتح، والملفات تُشفر.</p>
+                        <button class="btn-cyber" style="margin-top: 30px; font-size: 1.1rem; border-color: #fff; color: #fff; background: rgba(255,255,255,0.1);" onclick="resetTrap()">استعادة النظام</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-6', 'درع التنمر')">المحطة 6: التنمر <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-6" class="page-section">
+            <h2 class="section-title">محاكي <span>مواجهة التنمر</span></h2>
+            <div class="glass-panel">
+                <p style="text-align: center; margin-bottom: 20px;">غرف الدردشة في الألعاب مليئة بالمتنمرين. قم بتفعيل درع الثقة بالنفس لحجب الرسائل السامة.</p>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <button class="btn-cyber" onclick="activateShield()"><i class="fa-solid fa-shield"></i> تفعيل الدرع النفسي</button>
+                </div>
+                <div class="shield-arena" id="shield-arena">
+                    <div class="force-field" id="force-field"></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-7', 'المحاكاة السلوكية')">المحطة 7: المحاكاة <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-7" class="page-section">
+            <h2 class="section-title">المحاكاة <span>السلوكية العميقة</span></h2>
+            <div class="glass-panel">
+                <div class="story-screen" id="story-screen">
+                    <div class="story-text" id="story-text">أنت الآن بعد يوم دراسي طويل. أصدقاؤك يطلبون منك الانضمام لمباراة سريعة عبر الإنترنت. ماذا تفعل؟</div>
+                    <div class="story-choices" id="story-choices" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                        <button class="btn-cyber" style="border-color: var(--alert-red);" onclick="storyAdvance('bad')">ألعب لمدة 5 ساعات</button>
+                        <button class="btn-cyber" style="border-color: var(--success-green);" onclick="storyAdvance('good')">أعتذر وأنجز واجباتي</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-8', 'الفحص والتركيز')">المحطة 8: الفحص <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-8" class="page-section">
+            <h2 class="section-title">الفحص السلوكي <span>والتركيز</span></h2>
+            <div class="glass-panel analyzer-grid">
+                <div class="chart-box">
+                    <h3 style="text-align:center; color:var(--neon-cyan); margin-bottom:20px;">التأثير على الروابط العصبية</h3>
+                    <canvas id="brainChart" height="220"></canvas>
+                </div>
+                <div class="chart-box" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <h3 style="margin-bottom: 20px;">كبسولة التركيز العلاجية</h3>
+                    <div class="svg-timer-container">
+                        <svg class="svg-timer" viewBox="0 0 220 220">
+                            <circle class="svg-timer-bg" cx="110" cy="110" r="100"></circle>
+                            <circle class="svg-timer-progress" id="timer-progress" cx="110" cy="110" r="100"></circle>
+                        </svg>
+                        <div class="timer-text" id="focus-time">25:00</div>
+                    </div>
+                    <button class="btn-cyber" style="margin-top: 25px;" onclick="startFocusTimer()" id="focus-btn"><i class="fa-solid fa-play"></i> ابدأ التخلص من السموم</button>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-9', 'الخوارزميات المخفية')">المحطة 9: الخوارزميات <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-9" class="page-section">
+            <h2 class="section-title">الخوارزميات <span>المخفية (ما لا تراه)</span></h2>
+            <div class="glass-panel">
+                <p style="text-align: center; margin-bottom: 30px; font-size: 1.2rem; color: #b0bec5;">الألعاب ليست بريئة، إنها مصممة بأساليب هندسة نفسية دقيقة لتبقيك متصلاً أطول فترة ممكنة، إليك 10 فخوخ لا تراها عينك:</p>
+                <div class="fact-grid">
+                    <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-box-open"></i> صندوق سكينر</h3><p>مكافآت عشوائية مبرمجة لجعلك تدمن فتح الصناديق (Loot Boxes) بحثاً عن الفوز الوهمي، تماماً كالمقامرة.</p></div></div>
+                    <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-clock-rotate-left"></i> فوبيا التفويت (FOMO)</h3><p>أحداث وعناصر مؤقتة تختفي بسرعة لتوليد القلق وإجبارك على الدخول للعبة يومياً لتجنب تفويت الفرصة.</p></div></div>
+                    <div class="fact-card gold tilt-card"><div class="tilt-content"><h3 style="color: var(--gold-coin); margin-bottom: 10px;"><i class="fa-solid fa-chart-line"></i> التلاعب بالصعوبة</h3><p>الخوارزميات تعدل مستوى الصعوبة ديناميكياً خلف الكواليس لضمان عدم إحباطك كلياً، لتبقى مدمناً وتستمر في اللعب.</p></div></div>
+                    <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-anchor"></i> التكلفة الغارقة (Sunk Cost)</h3><p>إجبارك نفسياً على الاستمرار في اللعب بحجة "لقد أمضيت 100 ساعة ودفعت أموالاً، لا يمكنني ترك حسابي الآن".</p></div></div>
+                    <div class="fact-card green tilt-card"><div class="tilt-content"><h3 style="color: var(--success-green); margin-bottom: 10px;"><i class="fa-solid fa-coins"></i> العملات الوهمية (Premium)</h3><p>تحويل أموالك الحقيقية لـ"جواهر" أو "ذهب" داخل اللعبة ليفقد عقلك الإحساس بقيمة المال الحقيقي وتصرف أكثر دون وعي.</p></div></div>
+                    <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-calendar-xmark"></i> عقوبات الانقطاع (Decaying)</h3><p>خوارزميات تعاقبك بخصم نقاطك وتصنيفك أو تدمير قريتك الافتراضية إذا تجرأت على ترك اللعبة ليوم واحد.</p></div></div>
+                    <div class="fact-card gold tilt-card"><div class="tilt-content"><h3 style="color: var(--gold-coin); margin-bottom: 10px;"><i class="fa-solid fa-fire"></i> سلاسل الدخول (Daily Streaks)</h3><p>استغلال رغبة الدماغ في الاكتمال؛ فتجد نفسك تفتح التطبيق يومياً فقط لعدم كسر "سلسلة الـ 100 يوم" المتتالية.</p></div></div>
+                    <div class="fact-card tilt-card"><div class="tilt-content"><h3 style="color: var(--alert-red); margin-bottom: 10px;"><i class="fa-solid fa-hammer"></i> تأثير إيكيا (The IKEA Effect)</h3><p>دفعك لتخصيص شخصيتك وبناء عالمك بجهد ووقت طويل جداً، مما يخلق ارتباطاً عاطفياً زائفاً يمنعك من حذف اللعبة.</p></div></div>
+                    <div class="fact-card green tilt-card"><div class="tilt-content"><h3 style="color: var(--success-green); margin-bottom: 10px;"><i class="fa-solid fa-users-viewfinder"></i> الدليل الاجتماعي المزيف</h3><p>إظهار إشعارات وهمية أو موجهة مثل "صديقك فلان اشترى هذا السلاح" للضغط عليك نفسياً لتقليده والانتماء للقطيع.</p></div></div>
+                    <div class="fact-card cyan tilt-card"><div class="tilt-content"><h3 style="color: var(--neon-cyan); margin-bottom: 10px;"><i class="fa-solid fa-infinity"></i> المطاردة اللانهائية (Bottomless)</h3><p>تصميم القوائم والمهام والمباريات لتكون متصلة بلا نهاية أو خط توقف واضح، لقتل إحساسك بالوقت تماماً.</p></div></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-10', 'الهندسة الاجتماعية')">المحطة 10: الهندسة <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-10" class="page-section">
+            <h2 class="section-title">الهندسة <span>الاجتماعية</span></h2>
+            <div class="glass-panel">
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.2rem; color: #b0bec5;">القراصنة لا يخترقون الأنظمة دائماً.. بل يخترقون عقول البشر عبر الثقة الزائفة.</p>
+                <div class="cyber-trap-box" style="max-width: 600px;">
+                    <h3 style="margin-bottom: 15px; color: var(--alert-red); text-align: right;">رسالة من حساب صديقك (محاكاة):</h3>
+                    <div class="trap-chat" style="border-right-color: var(--alert-red); text-align: right; font-size: 1.2rem; line-height: 1.5;">
+                        "يا صاحبي حسابي القديم اتقفل ومحتاج مساعدتك أرجعه، ممكن تبعتلي الكود اللي هيوصلك في رسالة دلوقتي بسرعة؟"
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                        <button class="btn-cyber" style="border-color: var(--alert-red); color: var(--alert-red); padding: 10px 20px;" onclick="showToast('فشل! لقد سلمت حسابك للقراصنة، هذا هجوم هندسة اجتماعية كلاسيكي.', 'danger', 'fa-times')"><i class="fa-solid fa-share"></i> أرسل الكود له</button>
+                        <button class="btn-cyber" style="border-color: var(--success-green); color: var(--success-green); padding: 10px 20px;" onclick="showToast('ممتاز! الكود السري لا يُشارك مع أحد أبداً مهما كانت ثقتك به.', 'success', 'fa-check')"><i class="fa-solid fa-ban"></i> أرفض وأتصل به هاتفياً</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;"><button class="btn-cyber" onclick="nav('station-11', 'ميثاق الشرف')">المحطة 11: الميثاق <i class="fa-solid fa-forward"></i></button></div>
+        </section>
+
+        <section id="station-11" class="page-section">
+            <h2 class="section-title">ميثاق <span>الشرف الرقمي</span></h2>
+            <div class="glass-panel oath-box">
+                <div class="oath-text">
+                    "أتعهد أنا بصفتي مستخدماً واعياً للتكنولوجيا، أن أحافظ على وقتي وصحتي النفسية، وأن لا أسمح للألعاب الإلكترونية أو العالم الافتراضي بالسيطرة على مستقبلي ونجاحي. وأتعهد بحماية بياناتي واحترام الآخرين رقمياً."
+                </div>
+                <h3 style="margin-bottom: 20px; color: var(--neon-cyan);">اضغط بالبصمة للموافقة والاعتماد</h3>
+                <div class="fingerprint-scanner" id="fingerprint" onclick="scanFinger()"></div>
+            </div>
+        </section>
+
+        <section id="station-12" class="page-section">
+            <h2 class="section-title">الاعتماد <span>الدولي للوعي</span></h2>
+            <div class="glass-panel" style="text-align: center;">
+                <button class="btn-cyber" id="to-cert-btn" onclick="generateCert()" style="font-size: 1.4rem; padding: 15px 40px; display: none;"><i class="fa-solid fa-award"></i> عرض الشهادة</button>
+
+                <div class="cert-container" id="cert-box">
+                    <div class="cert-watermark">إدارة ميت غمر التعليمية<br>JUWAIRIYA TECH</div>
+                    <div class="cert-header">
+                        <h1 style="font-family: var(--hud-font); font-size: 2.2rem; color: var(--deep-blue); margin: 0; font-weight: 900;">إدارة ميت غمر التعليمية</h1>
+                        <h2 style="font-family: var(--hud-font); font-size: 1.8rem; color: #111; margin: 5px 0;">مدرسة محمد هاشم النقيب الثانوية المشتركة</h2>
+                        <p style="color: var(--neon-cyan); font-weight: 900; background: #111; display: inline-block; padding: 6px 25px; border-radius: 30px; margin-top: 8px; letter-spacing: 1px;">برنامج جويرية تك (Juwairiya Tech) للوعي الرقمي</p>
+                    </div>
+                    <div class="cert-body">
+                        <h2 style="font-size: 2.8rem; margin-bottom: 10px; color: #111; font-weight: 900; letter-spacing: 1px;">شهادة اجتياز واعتماد دولي</h2>
+                        <p style="font-weight: bold; font-size: 1.3rem; color: #444;">تشهد الإدارة وفريق العمل بأن الراكب/ـة</p>
+                        <div class="cert-name-box">
+                            <h2 id="cert-name-display" style="font-size: 3.5rem; color: #b30000; font-weight: 900;">---</h2>
+                        </div>
+                        <p style="max-width: 85%; margin: 0 auto; font-size: 1.2rem; line-height: 1.8; font-weight: 700; color: #333;">قد أتم بنجاح رحلة قطار الوعي السريع متجاوزاً 12 محطة تفاعلية، ووقع ميثاق الشرف الرقمي، مثبتاً قدرة استثنائية على كشف فخوخ الألعاب الإلكترونية وتطبيق معايير الأمن السيبراني.</p>
+                    </div>
+                    <div class="cert-footer">
+                        <div class="signature-line">
+                            <h4 style="margin: 0; font-size: 1.2rem; font-weight: 900;">محمود محمد عبد الوهاب عيسى</h4>
+                            <p style="margin: 0; font-size: 0.9rem; color: #555; font-weight: bold;">مطور النظام وخبير الهندرة</p>
+                        </div>
+                        <div class="gold-seal">ختم<br>التميز<br>الرقمي</div>
+                        <div class="signature-line">
+                            <h4 style="margin: 0; font-size: 1.2rem; font-weight: 900;" id="cert-date-display">---</h4>
+                            <p style="margin: 0; font-size: 0.9rem; color: #555; font-weight: bold;">تاريخ الإصدار المعتمد</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-cyber" style="margin-top: 40px; display: none; background: #fff; color: #000;" id="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> حفظ بصيغة PDF / طباعة</button>
+            </div>
+        </section>
+
+        <section id="station-admin" class="page-section">
+            <h2 class="section-title">لوحة <span>التحكم الاحترافية</span></h2>
+            <div class="glass-panel">
+                <div id="admin-login-area" style="text-align: center; padding: 40px 0;">
+                    <p style="margin-bottom: 20px; font-size: 1.2rem;">يرجى إدخال كلمة مرور مدير النظام للوصول للوحة التحكم.</p>
+                    <input type="password" id="admin-pass" class="pass-input" placeholder="كلمة المرور...">
+                    <br>
+                    <button class="btn-cyber" onclick="checkAdmin()"><i class="fa-solid fa-unlock-keyhole"></i> تسجيل الدخول</button>
+                </div>
+                
+                <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+                    
+                    <div class="admin-toolbar">
+                        <input type="text" class="search-input" id="search-student" placeholder="🔍 ابحث عن طالب بالاسم أو التاريخ..." oninput="filterStudents()">
+                        
+                        <div class="toolbar-group">
+                            <button class="btn-cyber" style="padding: 10px 15px; font-size: 1rem;" onclick="addNewStudentPrompt()"><i class="fa-solid fa-plus"></i> إضافة طالب</button>
+                            <button class="btn-cyber" style="padding: 10px 15px; font-size: 1rem; border-color: var(--gold-coin); color: var(--gold-coin);" onclick="exportData('csv')"><i class="fa-solid fa-file-csv"></i> تصدير CSV</button>
+                            <button class="btn-cyber" style="padding: 10px 15px; font-size: 1rem; border-color: #8892b0; color: #8892b0;" onclick="exportData('json')"><i class="fa-solid fa-file-code"></i> JSON</button>
+                            
+                            <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+                            <button class="btn-cyber" style="padding: 10px 15px; font-size: 1rem; border-color: var(--success-green); color: var(--success-green);" onclick="document.getElementById('import-file').click()"><i class="fa-solid fa-upload"></i> استيراد</button>
+                            
+                            <button class="btn-cyber" style="padding: 10px 15px; font-size: 1rem; border-color: var(--alert-red); color: var(--alert-red);" onclick="clearAllData()"><i class="fa-solid fa-trash-can"></i> تفريغ</button>
+                        </div>
+                    </div>
+
+                    <div class="analyzer-grid">
+                        <div class="chart-box" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <h3 style="color:var(--neon-cyan); margin-bottom:20px;">معدل استكمال الرحلة</h3>
+                            <canvas id="adminStatsChart" height="220"></canvas>
+                        </div>
+                        <div class="chart-box table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>اسم الطالب</th>
+                                        <th>تاريخ الانضمام</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-list">
+                                    <!-- يتم توليد البيانات ديناميكياً هنا -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- الفوتر الاحترافي (Sovereign Eagle) بالتدرجات الزاهية السماوي والأزرق[span_0](start_span)[span_0](end_span) -->
+    <div class="footer-wrapper">
+        <div class="circle-container">
+            <svg viewBox="0 0 500 500" class="rotating-svg">
+                <defs><path id="textCirclePath" d="M 250, 440 A 190,190 0 1,1 250,60 A 190,190 0 1,1 250,440" /></defs>
+                <circle cx="250" cy="250" r="215" fill="none" stroke="rgba(0, 210, 255, 0.4)" stroke-width="4" />
+                <circle cx="250" cy="250" r="165" fill="none" stroke="rgba(0, 86, 179, 0.6)" stroke-width="4" />
+                <text><textPath href="#textCirclePath" startOffset="50%" text-anchor="middle" class="text-path-style">
+                    ALL RIGHTS RESERVED ®© DESIGNED & DEVELOPED BY <tspan class="name-highlight">MAHMOUD MOHAMED</tspan>
+                </textPath></text>
+            </svg>
+            <div class="center-prayer">
+                <span>ولا تنسونا من خالص دعائكم بظهر الغيب</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= محرك المزامنة وقاعدة البيانات الاحترافية =================
+        const GOOGLE_APPS_SCRIPT_API_URL = "https://script.google.com/macros/s/AKfycbxgwe9rKMCJei6ozlfYR2rglWgKjsyGYkDxmCjIDRnvl6pQ4b0LurZQtVkqJVr4p8vi_g/exec"; 
+        let passengerName = "", currentPassengerId = null;
+        let isAudioMuted = false;
+        let brainData = [100, 100, 100, 100, 100];
+        let brainChart, adminChartInstance = null;
+        let trainSpeedMultiplier = 1;
+        let ambientOscillator = null;
+        let oathSigned = false;
+        
+        let localStudentsCache = JSON.parse(localStorage.getItem('juwairiya_students') || '[]');
+        let dataChanged = false;
+
+        // توليد معرف فريد (UUID)
+        function generateId() { return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).substr(2, 9); }
+
+        function hidePreloader() {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => document.getElementById('preloader').style.display = 'none', 800);
+            }, 1000);
+        }
+
+        function setSyncStatus(status) {
+            const dot = document.getElementById('sync-dot');
+            const text = document.getElementById('sync-text');
+            dot.className = 'sync-dot ' + status;
+            if(status === 'online') text.innerText = 'متصل ومزامن';
+            else if(status === 'offline') text.innerText = 'غير متصل (أوفلاين)';
+            else if(status === 'syncing') text.innerText = 'جاري المزامنة...';
+            else text.innerText = 'حفظ محلي';
+        }
+
+        window.addEventListener('online', () => { 
+            setSyncStatus('online'); 
+            if(dataChanged) syncData('background_sync'); 
+        });
+        window.addEventListener('offline', () => setSyncStatus('offline'));
+
+        async function syncData(action, data = null) {
+            if(!navigator.onLine) {
+                setSyncStatus('offline');
+            } else {
+                setSyncStatus('syncing');
+            }
+            
+            if(action === 'add') {
+                if(!localStudentsCache.find(s => s.id === data.id)) localStudentsCache.push(data);
+                dataChanged = true;
+            } else if (action === 'complete') {
+                let sIndex = localStudentsCache.findIndex(s => s.id === data.id);
+                if(sIndex !== -1) { localStudentsCache[sIndex].completed = true; dataChanged = true; }
+            } else if (action === 'update_all') {
+                localStudentsCache = data; dataChanged = true;
+            }
+
+            localStorage.setItem('juwairiya_students', JSON.stringify(localStudentsCache));
+
+            if (GOOGLE_APPS_SCRIPT_API_URL !== "" && navigator.onLine) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 12000); 
+
+                try {
+                    let response = await fetch(GOOGLE_APPS_SCRIPT_API_URL + "?action=" + (action==='get_all'?'get_all':'update_all'), {
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(localStudentsCache),
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+
+                    let result = await response.json(); 
+                    setSyncStatus('online');
+                    if(action === 'get_all' && Array.isArray(result) && result.length > 0) {
+                        localStudentsCache = result;
+                        localStorage.setItem('juwairiya_students', JSON.stringify(localStudentsCache));
+                    }
+                    dataChanged = false;
+                    return localStudentsCache;
+                } catch (e) {
+                    clearTimeout(timeoutId);
+                    setSyncStatus('offline'); 
+                }
+            } 
+            
+            if(navigator.onLine) setTimeout(() => setSyncStatus('online'), 800); 
+            return localStudentsCache;
+        }
+
+        setInterval(() => {
+            if(dataChanged && navigator.onLine && !document.hidden) { 
+                syncData('background_sync'); 
+            }
+        }, 30000);
+
+        // ================= النوافذ المنبثقة الاحترافية (Cyber Modal System) المخصصة بوعود (Promises) =================
+        function showCyberModal(type, title, message, defaultValue = '', icon = 'fa-circle-exclamation', color = 'var(--neon-cyan)') {
+            return new Promise((resolve) => {
+                const overlay = document.getElementById('cyber-modal-overlay');
+                const box = document.getElementById('cyber-modal-box');
+                const titleEl = document.getElementById('cyber-modal-title');
+                const msgEl = document.getElementById('cyber-modal-msg');
+                const iconEl = document.getElementById('cyber-modal-icon');
+                const inputEl = document.getElementById('cyber-modal-input');
+                const btnConfirm = document.getElementById('cyber-modal-btn-confirm');
+                const btnCancel = document.getElementById('cyber-modal-btn-cancel');
+
+                box.style.borderColor = color;
+                box.style.boxShadow = `0 0 50px rgba(${color === 'var(--alert-red)' ? '255,42,95' : '0,210,255'}, 0.2)`;
+                iconEl.className = `fa-solid ${icon}`;
+                iconEl.style.color = color;
+                iconEl.style.textShadow = `0 0 20px ${color}`;
+                btnConfirm.style.borderColor = color;
+                btnConfirm.style.color = color;
+                
+                if(color === 'var(--alert-red)') {
+                    btnConfirm.onmouseover = () => { btnConfirm.style.background = 'var(--alert-red)'; btnConfirm.style.color = '#fff'; };
+                    btnConfirm.onmouseout = () => { btnConfirm.style.background = 'transparent'; btnConfirm.style.color = 'var(--alert-red)'; };
+                } else {
+                    btnConfirm.onmouseover = () => { btnConfirm.style.background = 'var(--neon-cyan)'; btnConfirm.style.color = '#000'; };
+                    btnConfirm.onmouseout = () => { btnConfirm.style.background = 'transparent'; btnConfirm.style.color = 'var(--neon-cyan)'; };
+                }
+
+                titleEl.innerText = title;
+                msgEl.innerText = message;
+                inputEl.value = defaultValue;
+
+                inputEl.style.display = type === 'prompt' ? 'block' : 'none';
+                btnCancel.style.display = (type === 'prompt' || type === 'confirm') ? 'flex' : 'none';
+
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    box.style.transform = 'scale(1)';
+                    if(type === 'prompt') inputEl.focus();
+                }, 10);
+
+                const close = (val) => {
+                    overlay.style.opacity = '0';
+                    box.style.transform = 'scale(0.8)';
+                    setTimeout(() => overlay.style.display = 'none', 300);
+                    btnConfirm.onclick = null; btnCancel.onclick = null;
+                    resolve(val);
+                };
+
+                btnConfirm.onclick = () => {
+                    if (type === 'prompt') close(inputEl.value);
+                    else close(true);
+                };
+                btnCancel.onclick = () => close(false);
+
+                // دعم زر الـ Enter لتجربة مستخدم أسرع
+                inputEl.onkeyup = (e) => {
+                    if (e.key === 'Enter') btnConfirm.click();
+                };
+            });
+        }
+
+        // ================= الأصوات والتحكم =================
+        function toggleAudio() {
+            isAudioMuted = !isAudioMuted;
+            document.getElementById('audio-toggle').innerHTML = isAudioMuted ? '<i class="fa-solid fa-volume-xmark"></i>' : '<i class="fa-solid fa-volume-high"></i>';
+            document.getElementById('audio-toggle').style.color = isAudioMuted ? 'var(--alert-red)' : 'var(--neon-cyan)';
+            document.getElementById('audio-toggle').style.borderColor = isAudioMuted ? 'var(--alert-red)' : 'var(--neon-cyan)';
+            if(isAudioMuted && ambientOscillator) { ambientOscillator.stop(); ambientOscillator = null; } 
+            else if (!isAudioMuted && passengerName) { startAmbientNoise(); }
+        }
+
+        function startAmbientNoise() {
+            if(ambientOscillator || isAudioMuted) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                ambientOscillator = ctx.createOscillator();
+                const gain = ctx.createGain();
+                ambientOscillator.type = 'sine';
+                ambientOscillator.frequency.setValueAtTime(55, ctx.currentTime);
+                gain.gain.setValueAtTime(0.015, ctx.currentTime);
+                setInterval(() => {
+                    gain.gain.linearRampToValueAtTime(0.03, ctx.currentTime + 0.5);
+                    gain.gain.linearRampToValueAtTime(0.015, ctx.currentTime + 1);
+                }, 1000);
+                ambientOscillator.connect(gain); gain.connect(ctx.destination);
+                ambientOscillator.start();
+            } catch(e) {}
+        }
+
+        function playSound(freq, type) {
+            if(isAudioMuted) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator(), gain = ctx.createGain();
+                osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.00001, ctx.currentTime + 0.3);
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.start(); osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {}
+        }
+
+        const cursorDot = document.getElementById("cursor-dot"), cursorRing = document.getElementById("cursor-ring");
+        window.addEventListener("mousemove", (e) => {
+            cursorDot.style.left = e.clientX + 'px'; cursorDot.style.top = e.clientY + 'px';
+            setTimeout(() => { cursorRing.style.left = e.clientX + 'px'; cursorRing.style.top = e.clientY + 'px'; }, 50);
+        });
+
+        document.querySelectorAll('a, button, .tilt-card, .fingerprint-scanner').forEach(el => {
+            el.addEventListener('mouseenter', () => { cursorRing.style.width = '60px'; cursorRing.style.height = '60px'; cursorRing.style.borderColor = 'var(--gold-coin)'; });
+            el.addEventListener('mouseleave', () => { cursorRing.style.width = '40px'; cursorRing.style.height = '40px'; cursorRing.style.borderColor = 'var(--neon-cyan)'; });
+        });
+
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                let rect = card.getBoundingClientRect();
+                let x = e.clientX - rect.left; let y = e.clientY - rect.top;
+                let rotateX = ((y / rect.height) - 0.5) * -10; let rotateY = ((x / rect.width) - 0.5) * 10;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`; });
+        });
+
+        // تم الترقية لتعمل بطريقة غير متزامنة مع النافذة الجديدة
+        async function boardTrain() {
+            const nameInput = document.getElementById('passenger-name').value.trim();
+            if(!nameInput) { 
+                await showCyberModal('alert', 'بيانات مفقودة', 'الرجاء إدخال اسمك أولاً لإنشاء التذكرة السيبرانية وبدء الرحلة!', '', 'fa-id-card', 'var(--alert-red)');
+                return; 
+            }
+            passengerName = nameInput;
+            currentPassengerId = generateId();
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-EG') + " " + now.toLocaleTimeString('ar-EG');
+            
+            syncData('add', { id: currentPassengerId, name: passengerName, date: dateStr, completed: false });
+
+            document.getElementById('ticket-modal').style.display = 'none';
+            playSound(800, 'square'); startAmbientNoise();
+            announceStation("مرحباً بك يا " + passengerName + " في منصة جويرية تك.");
+            initCharts();
+        }
+
+        function announceStation(text) {
+            if ('speechSynthesis' in window && !isAudioMuted) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ar-SA'; utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function nav(id, stationName) {
+            trainSpeedMultiplier = 35;
+            document.getElementById('warp-overlay').style.opacity = '1';
+            playSound(300, 'sawtooth');
+            
+            setTimeout(() => {
+                trainSpeedMultiplier = 1;
+                document.getElementById('warp-overlay').style.opacity = '0';
+                
+                document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+                document.getElementById(id).classList.add('active');
+                
+                document.querySelectorAll('.station-link').forEach(a => a.classList.remove('active'));
+                if(event) event.currentTarget.classList.add('active');
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                announceStation("المحطة الحالية: " + stationName);
+                showToast("وصلت إلى: " + stationName, "info", "fa-train");
+            }, 800);
+        }
+
+        function showToast(msg, type='info', icon='fa-bell') {
+            const toast = document.createElement('div');
+            toast.className = 'smart-toast';
+            toast.style.borderRightColor = type === 'danger' ? 'var(--alert-red)' : (type === 'success' ? 'var(--success-green)' : 'var(--neon-cyan)');
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="font-size:1.5rem; color:${toast.style.borderRightColor}"></i> <div>${msg}</div>`;
+            document.getElementById('toast-container').appendChild(toast);
+            setTimeout(() => toast.remove(), 4500);
+        }
+
+        function simulateDopamine(type) {
+            const brain = document.getElementById('brain-visual'), bar = document.getElementById('dopamine-bar'), levelText = document.getElementById('dopamine-level');
+            brain.className = "brain-visual " + (type === 'bad' ? 'spike' : 'steady'); playSound(type === 'bad' ? 300 : 800, type === 'bad' ? 'sawtooth' : 'sine');
+            if(type === 'bad') {
+                bar.style.width = '100%'; bar.style.background = 'var(--alert-red)'; levelText.innerText = "ارتفاع وهمي سريع!"; levelText.style.color = "var(--alert-red)";
+                setTimeout(() => { bar.style.width = '5%'; levelText.innerText = "انهيار واكتئاب (Crash)"; brain.className = "brain-visual"; }, 1500);
+            } else {
+                bar.style.width = '60%'; bar.style.background = 'var(--success-green)'; levelText.innerText = "إفراز مستقر وصحي"; levelText.style.color = "var(--success-green)";
+                setTimeout(() => { brain.className = "brain-visual"; }, 1500);
+            }
+        }
+
+        let scanInProgress = false;
+        function startDataScan() {
+            if(scanInProgress) return; scanInProgress = true;
+            const term = document.getElementById('terminal-output'); term.innerHTML = "> INITIATING SECURITY SCAN...<br>"; playSound(500, 'square');
+            const logs = ["CONNECTING TO SERVERS...", "EXTRACTING DATA...", "<span style='color:red'>WARNING: 3 PASSWORD BREACHES DETECTED!</span>", "LOCATION DATA: <span style='color:yellow'>EXPOSED</span>", "IP ADDRESS: <span style='color:red'>LOGGED</span>", "<span style='color:var(--neon-cyan)'>LESSON: NEVER SHARE REAL INFO!</span>", "> SCAN COMPLETE."];
+            let i = 0;
+            function addLog() { if(i < logs.length) { term.innerHTML += "> " + logs[i] + "<br>"; term.scrollTop = term.scrollHeight; playSound(1000, 'sine'); i++; setTimeout(addLog, 800); } else { scanInProgress = false; } }
+            setTimeout(addLog, 1000);
+        }
+
+        function triggerTrap() { document.getElementById('hacked-screen').style.display = 'flex'; playSound(150, 'square'); setTimeout(() => playSound(100, 'square'), 200); showToast("تم اكتشاف نشاط خبيث", "danger", "fa-skull-crossbones"); }
+        function resetTrap() { document.getElementById('hacked-screen').style.display = 'none'; }
+
+        let shieldActive = false;
+        function dropToxicMessage() {
+            const arena = document.getElementById('shield-arena'); const msgs = ["أنت ضعيف جداً!", "اخرج من اللعبة يا فاشل", "سأهكر حسابك!", "لا أحد يحبك هنا"];
+            const msgDiv = document.createElement('div'); msgDiv.className = 'toxic-msg'; msgDiv.innerText = msgs[Math.floor(Math.random() * msgs.length)]; msgDiv.style.left = Math.random() * 70 + 10 + '%'; arena.appendChild(msgDiv);
+            setTimeout(() => { if(!shieldActive) { msgDiv.style.top = '350px'; playSound(200, 'sawtooth'); } else { msgDiv.style.top = '250px'; msgDiv.style.opacity = '0'; playSound(1000, 'sine'); } }, 100);
+            setTimeout(() => msgDiv.remove(), 3100);
+        }
+        setInterval(() => { if(document.getElementById('station-6').classList.contains('active')) dropToxicMessage(); }, 2000);
+        function activateShield() { shieldActive = true; document.getElementById('force-field').style.display = 'block'; showToast("تم تفعيل الدرع!", "success", "fa-shield"); playSound(600, 'sine'); setTimeout(() => { shieldActive = false; document.getElementById('force-field').style.display = 'none'; }, 8000); }
+
+        let isTyping = false;
+        function typeWriter(text, elementId, callback) {
+            if(isTyping) return; isTyping = true; const el = document.getElementById(elementId); el.innerHTML = ''; let i = 0;
+            function type() { if (i < text.length) { el.innerHTML += text.charAt(i); i++; if(i%3===0) playSound(1200 + Math.random()*400, 'sine'); setTimeout(type, 30); } else { isTyping = false; if(callback) callback(); } } type();
+        }
+
+        function storyAdvance(choice) {
+            if(isTyping) return;
+            const storyChoices = document.getElementById('story-choices'); storyChoices.style.display = 'none'; let newText = "";
+            if(choice === 'bad') { newText = "مرت 5 ساعات.. عيناك تؤلمانك، فاتتك المذاكرة، وتشعر بالندم الشديد."; brainData = brainData.map(v => Math.max(20, v - 30)); brainChart.data.datasets[0].borderColor = '#ff2a5f'; playSound(200, 'sawtooth'); } 
+            else if (choice === 'good') { newText = "قرار حكيم! لقد أنجزت مهامك، تشعر بالثقة واستقرار الدوبامين."; brainData = [100, 100, 100, 100, 100]; brainChart.data.datasets[0].borderColor = '#00e676'; playSound(800, 'sine'); } 
+            else { newText = "أصدقاؤك يطلبون منك الانضمام لمباراة سريعة. ماذا تفعل؟"; }
+            brainChart.update();
+            typeWriter(newText, 'story-text', () => { storyChoices.style.display = 'flex'; if(choice === 'bad' || choice === 'good') storyChoices.innerHTML = `<button class="btn-cyber" onclick="storyAdvance('reset')">أعد المحاكاة</button>`; else storyChoices.innerHTML = `<button class="btn-cyber" style="border-color: var(--alert-red);" onclick="storyAdvance('bad')">ألعب</button><button class="btn-cyber" style="border-color: var(--success-green);" onclick="storyAdvance('good')">أعتذر وأذاكر</button>`; });
+        }
+
+        function initCharts() {
+            if(brainChart) return;
+            const ctxBrain = document.getElementById('brainChart').getContext('2d');
+            Chart.defaults.color = '#fff'; Chart.defaults.font.family = "'Cairo', sans-serif";
+            brainChart = new Chart(ctxBrain, { type: 'radar', data: { labels: ['التركيز', 'الذاكرة', 'الدوبامين', 'النوم', 'النفسية'], datasets: [{ data: brainData, borderColor: '#00d2ff', backgroundColor: 'rgba(0,210,255,0.2)', borderWidth: 3, pointBackgroundColor: '#fff' }] }, options: { scales: { r: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.1)' }, pointLabels: { font:{size:12, weight:'bold'} }, angleLines:{color:'rgba(255,255,255,0.1)'} } }, plugins:{legend:{display:false}} } });
+        }
+
+        let focusTimer, timeLeft = 25 * 60, isFocusing = false; const totalTime = 25 * 60; const progressCircle = document.getElementById('timer-progress'), circumference = 2 * Math.PI * 100;
+        function startFocusTimer() {
+            if(isFocusing) return; isFocusing = true;
+            document.getElementById('focus-btn').innerHTML = "جاري التخلص من السموم..."; document.getElementById('focus-btn').style.background = "var(--alert-red)"; showToast("جلسة التركيز بدأت.", "info", "fa-brain");
+            focusTimer = setInterval(() => {
+                timeLeft--; let m = Math.floor(timeLeft / 60).toString().padStart(2, '0'), s = (timeLeft % 60).toString().padStart(2, '0');
+                document.getElementById('focus-time').innerText = `${m}:${s}`; progressCircle.style.strokeDashoffset = circumference - ((timeLeft / totalTime) * circumference);
+                if(timeLeft <= 0) { clearInterval(focusTimer); document.getElementById('focus-time').innerText = "00:00"; document.getElementById('focus-btn').innerHTML = "<i class='fa-solid fa-check'></i> اكتملت بنجاح"; document.getElementById('focus-btn').style.background = "var(--success-green)"; showToast("ممتاز!", "success"); confetti(); playSound(900, 'sine'); }
+            }, 1000);
+        }
+
+        function scanFinger() {
+            if(oathSigned) return; oathSigned = true;
+            document.getElementById('fingerprint').classList.add('scanned'); document.getElementById('fingerprint').style.borderColor = "var(--success-green)";
+            playSound(600, 'sine'); showToast("تم توثيق البصمة!", "success"); confetti(); playSound(1200, 'square');
+            document.getElementById('to-cert-btn').style.display = "inline-block";
+            setTimeout(() => { nav('station-12', 'الاعتماد الدولي'); setTimeout(() => { generateCert(); }, 800); }, 1000); 
+        }
+
+        function generateCert() {
+            if(!oathSigned) { showToast("يجب توقيع الميثاق أولاً!", "danger"); return; }
+            const certName = passengerName || "ضيف الشرف";
+            const nameDisplay = document.getElementById('cert-name-display'); nameDisplay.innerText = certName;
+            if(certName.length > 30) nameDisplay.style.fontSize = "2.2rem"; else if(certName.length > 20) nameDisplay.style.fontSize = "2.8rem"; else nameDisplay.style.fontSize = "3.5rem";
+            document.getElementById('cert-date-display').innerText = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('cert-box').style.display = 'flex'; document.getElementById('print-btn').style.display = 'inline-flex'; document.getElementById('to-cert-btn').style.display = 'none'; 
+            
+            syncData('complete', { id: currentPassengerId });
+            confetti({ particleCount: 400, spread: 180, origin: { y: 0.6 } }); announceStation("تم إصدار شهادتك بنجاح."); showToast("تم توليد الشهادة.", "success");
+            setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }, 500);
+        }
+
+        // ================= محطة 13: نظام الإدارة المتقدم (التفاعل بالـ Cyber Modals) =================
+        async function checkAdmin() {
+            if(document.getElementById('admin-pass').value === 'admin') {
+                document.getElementById('admin-login-area').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                showToast("جاري جلب البيانات...", "success", "fa-unlock");
+                await syncData('get_all'); 
+                renderAdminDashboard(localStudentsCache);
+            } else { 
+                await showCyberModal('alert', 'فشل المصادقة', 'كلمة مرور مدير النظام غير صحيحة. يرجى المحاولة مرة أخرى.', '', 'fa-shield-halved', 'var(--alert-red)');
+            }
+        }
+
+        function renderAdminDashboard(dataList) {
+            let completedCount = dataList.filter(s => s.completed).length;
+            let totalCount = dataList.length;
+            let pendingCount = totalCount - completedCount;
+
+            let list = document.getElementById('students-list');
+            list.innerHTML = dataList.length === 0 ? `<tr><td colspan="4" style="color:#aaa;">لا توجد بيانات حالياً</td></tr>` : dataList.map(s => `
+                <tr>
+                    <td><strong>${s.name}</strong></td>
+                    <td><small style="color: #ccc">${s.date}</small></td>
+                    <td><span style="color: ${s.completed ? 'var(--success-green)' : 'var(--alert-red)'}; font-weight: bold;">
+                        ${s.completed ? 'مكتمل <i class="fa-solid fa-check"></i>' : 'قيد الرحلة <i class="fa-solid fa-spinner"></i>'}
+                    </span></td>
+                    <td>
+                        <button class="action-btn btn-toggle" onclick="toggleStudentStatus('${s.id}')" title="تبديل الحالة"><i class="fa-solid fa-rotate"></i></button>
+                        <button class="action-btn btn-edit" onclick="editStudent('${s.id}')" title="تعديل الاسم"><i class="fa-solid fa-pen"></i></button>
+                        <button class="action-btn btn-delete" onclick="deleteStudent('${s.id}')" title="حذف السجل"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+
+            const ctx = document.getElementById('adminStatsChart').getContext('2d');
+            if(adminChartInstance) adminChartInstance.destroy();
+            adminChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['أكملوا الرحلة', 'لم يكملوا'], datasets: [{ data: [completedCount, pendingCount], backgroundColor: ['#00e676', '#ff2a5f'], borderWidth: 2, borderColor: '#0a192f' }] },
+                options: { plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { family: "'Cairo', sans-serif", size: 14 } } } }, cutout: '65%' }
+            });
+        }
+
+        let debounceTimer;
+        function filterStudents() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                let term = document.getElementById('search-student').value.toLowerCase();
+                let filtered = localStudentsCache.filter(s => s.name.toLowerCase().includes(term) || s.date.includes(term));
+                renderAdminDashboard(filtered);
+            }, 300);
+        }
+
+        async function addNewStudentPrompt() {
+            let name = await showCyberModal('prompt', 'إضافة سجل جديد', 'أدخل اسم الطالب لإنشاء سجل جديد في النظام:', '', 'fa-user-plus');
+            if(name && name.trim()) {
+                const now = new Date();
+                let newData = { id: generateId(), name: name.trim(), date: now.toLocaleDateString('ar-EG') + " " + now.toLocaleTimeString('ar-EG'), completed: false };
+                localStudentsCache.unshift(newData);
+                syncData('update_all', localStudentsCache);
+                filterStudents();
+                showToast("تم إضافة الطالب بنجاح", "success");
+            }
+        }
+
+        async function editStudent(id) {
+            let index = localStudentsCache.findIndex(s => s.id === id);
+            if(index !== -1) {
+                let newName = await showCyberModal('prompt', 'تحديث السجلات', 'قم بتعديل الاسم الحالي للطالب المختار:', localStudentsCache[index].name, 'fa-pen-to-square');
+                if(newName && newName.trim()) {
+                    localStudentsCache[index].name = newName.trim();
+                    syncData('update_all', localStudentsCache);
+                    filterStudents();
+                    showToast("تم التعديل بنجاح", "success");
+                }
+            }
+        }
+
+        function toggleStudentStatus(id) {
+            let index = localStudentsCache.findIndex(s => s.id === id);
+            if(index !== -1) {
+                localStudentsCache[index].completed = !localStudentsCache[index].completed;
+                syncData('update_all', localStudentsCache);
+                filterStudents();
+                showToast("تم تحديث حالة الطالب", "info");
+            }
+        }
+
+        async function deleteStudent(id) {
+            let confirmed = await showCyberModal('confirm', 'تأكيد الحذف السيبراني', 'هل أنت متأكد من حذف هذا السجل نهائياً؟ سيتم تدميره محلياً وسحابياً ولا يمكن التراجع عنه.', '', 'fa-trash-can', 'var(--alert-red)');
+            if(confirmed) {
+                localStudentsCache = localStudentsCache.filter(s => s.id !== id);
+                syncData('update_all', localStudentsCache);
+                filterStudents();
+                showToast("تم الحذف بنجاح", "success", "fa-trash");
+            }
+        }
+
+        async function clearAllData() {
+            let confirmed = await showCyberModal('confirm', 'تحذير خطر (الدمار الشامل)!', 'هل أنت متأكد من تفريغ كافة البيانات للجميع؟ سيتم إتلاف جميع السجلات وقواعد البيانات بشكل نهائي.', '', 'fa-bomb', 'var(--alert-red)');
+            if(confirmed) {
+                localStudentsCache = [];
+                syncData('update_all', localStudentsCache);
+                filterStudents();
+                showToast("تم مسح قواعد البيانات وتفريغها", "danger", "fa-bomb");
+            }
+        }
+
+        function exportData(format) {
+            if(localStudentsCache.length === 0) { showToast("لا توجد بيانات للتصدير", "danger"); return; }
+            
+            let dataStr, mimeType, fileName;
+            
+            if(format === 'json') {
+                dataStr = JSON.stringify(localStudentsCache, null, 4);
+                mimeType = "application/json";
+                fileName = "juwairiya_backup.json";
+            } else if (format === 'csv') {
+                const bom = "\uFEFF"; 
+                let csvContent = "المعرف,اسم الطالب,التاريخ,الحالة\n";
+                localStudentsCache.forEach(s => { csvContent += `${s.id},"${s.name}","${s.date}",${s.completed ? 'مكتمل' : 'غير مكتمل'}\n`; });
+                dataStr = bom + csvContent;
+                mimeType = "text/csv;charset=utf-8;";
+                fileName = "juwairiya_stats.csv";
+            }
+
+            const blob = new Blob([dataStr], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = fileName;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            showToast(`تم تصدير ملف ${format.toUpperCase()} بنجاح`, "success");
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if(Array.isArray(importedData)) {
+                        let addedCount = 0;
+                        importedData.forEach(importedItem => {
+                            if(importedItem.name && importedItem.id) {
+                                if(!localStudentsCache.find(s => s.id === importedItem.id)) {
+                                    localStudentsCache.push(importedItem); addedCount++;
+                                }
+                            }
+                        });
+                        syncData('update_all', localStudentsCache);
+                        filterStudents();
+                        showToast(`تم دمج البيانات: أُضيف ${addedCount} سجل جديد`, "success");
+                    } else { throw new Error("Invalid Format"); }
+                } catch(error) { showToast("فشل الاستيراد: الملف غير صالح", "danger"); }
+                event.target.value = ""; 
+            };
+            reader.readAsText(file);
+        }
+
+        // ================= خلفية القطار =================
+        const canvas = document.getElementById('trainCanvas'), ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = [];
+        for(let i=0; i<200; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, length: Math.random()*30 + 10, speed: Math.random()*3 + 1 });
+        function drawTrainBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = 'rgba(0, 210, 255, 0.4)';
+            particles.forEach(p => { ctx.fillRect(p.x, p.y, p.length * trainSpeedMultiplier, 1.5); p.x -= p.speed * trainSpeedMultiplier; if(p.x < -p.length) { p.x = canvas.width; p.y = Math.random()*canvas.height; } });
+            requestAnimationFrame(drawTrainBackground);
+        }
+        drawTrainBackground(); window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+    </script>
+</body>
+</html>
+

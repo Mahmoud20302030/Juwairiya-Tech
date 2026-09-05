@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -185,9 +185,57 @@
         .btn-edit:hover { border-color: var(--neon-cyan); color: var(--neon-cyan); }
         .btn-delete:hover { border-color: var(--alert-red); color: var(--alert-red); }
         .btn-toggle:hover { border-color: var(--success-green); color: var(--success-green); }
+        .btn-view-cert:hover { border-color: var(--gold-coin); color: var(--gold-coin); box-shadow: 0 0 10px rgba(255, 234, 0, 0.4); }
         .table-container { overflow-x: auto; max-height: 400px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--neon-cyan) rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; }
         .table-container::-webkit-scrollbar { width: 8px; height: 8px; }
         .table-container::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+
+        /* ================= ستايل النسخة الكربونية داخل لوحة التحكم ================= */
+        .admin-cert-preview {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--gold-coin);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            box-shadow: inset 0 0 20px rgba(255, 234, 0, 0.05);
+            animation: scaleIn 0.5s ease-out;
+            flex-wrap: wrap;
+        }
+        
+        /* حاوية النسخة الكربونية المصغرة */
+        .carbon-scale-wrapper { 
+            width: 100%; 
+            max-width: 450px; 
+            margin: 0 auto; 
+            position: relative; 
+            transition: transform 0.3s; 
+            flex: 1;
+            min-width: 250px;
+        }
+        .carbon-scale-wrapper:hover { transform: scale(1.03); }
+        .carbon-scale-container { 
+            width: 100%; 
+            padding-top: 70.71%; /* لضبط نسبة العرض للارتفاع 1.414 */
+            position: relative; 
+            overflow: hidden; 
+            border: 3px solid var(--gold-coin); 
+            border-radius: 10px; 
+            box-shadow: 0 10px 30px rgba(255, 234, 0, 0.15); 
+            background: #fff; 
+        }
+        .carbon-scale-content { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 950px; /* العرض الأصلي للشهادة */
+            height: 671px; /* الارتفاع الأصلي */
+            transform-origin: top left; 
+            display: flex; 
+            pointer-events: none; 
+        }
 
         /* ================= الفوتر (المرفق بتدرجات الأزرق والسماوي) ================= */
         .footer-wrapper {
@@ -627,12 +675,39 @@
                             </table>
                         </div>
                     </div>
+
+                    <!-- شهادة الاجتياز الحية كنسخة كربونية (Live Carbon Copy) - الميزة المخفية! -->
+                    <div class="admin-cert-preview">
+                        <div style="flex: 1.5; min-width: 300px;">
+                            <h3 style="color: var(--gold-coin); font-size: 1.8rem; margin-bottom: 15px; font-family: var(--hud-font);"><i class="fa-solid fa-award"></i> نموذج شهادة الاجتياز المعتمدة</h3>
+                            <p style="color: #b0bec5; line-height: 1.7; font-size: 1.1rem; margin-bottom: 20px;">
+                                هذا هو النموذج الذهبي المعتمد الذي يُمنح تلقائياً للطلاب فور اجتيازهم كافة محطات الوعي السيبراني وتوثيقهم بالبصمة الرقمية.
+                                <br><br>
+                                <span style="color: var(--neon-cyan); font-weight: bold;"><i class="fa-solid fa-magic"></i> ميزة سحرية (ما لا تراه):</span> قم بتمرير الماوس فوق اسم أي طالب (مكتمل) في الجدول أعلاه، وسيتم توليد وعرض <strong>نسخة كربونية</strong> مطابقة لشهادته فوراً هنا قبل حتى أن تضغط عليها!
+                            </p>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                                <button class="btn-cyber" style="border-color: var(--gold-coin); color: var(--gold-coin); padding: 10px 20px; font-size: 1rem;"><i class="fa-solid fa-download"></i> تحميل النموذج كصورة</button>
+                                <button class="btn-cyber" style="border-color: var(--neon-cyan); color: var(--neon-cyan); padding: 10px 20px; font-size: 1rem;"><i class="fa-solid fa-share-nodes"></i> مشاركة النموذج</button>
+                            </div>
+                        </div>
+                        
+                        <!-- حاوية النسخة الكربونية الديناميكية المصغرة -->
+                        <div style="flex: 1; text-align: center; position: relative; min-width: 250px;" id="carbon-scale-wrapper" class="carbon-scale-wrapper">
+                            <div class="carbon-scale-container">
+                                <div id="carbon-scale-content" class="carbon-scale-content">
+                                    <!-- يتم استنساخ الشهادة الكربونية هنا برمجياً -->
+                                </div>
+                            </div>
+                            <div style="position: absolute; top: -15px; right: -10px; background: var(--gold-coin); color: #000; padding: 10px; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: 0 0 20px var(--gold-coin); animation: pulseTrap 2s infinite; z-index: 10;"><i class="fa-solid fa-medal"></i></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- الفوتر الاحترافي (Sovereign Eagle) بالتدرجات الزاهية السماوي والأزرق[span_0](start_span)[span_0](end_span) -->
+    <!-- الفوتر الاحترافي (Sovereign Eagle) بالتدرجات الزاهية السماوي والأزرق -->
     <div class="footer-wrapper">
         <div class="circle-container">
             <svg viewBox="0 0 500 500" class="rotating-svg">
@@ -745,7 +820,7 @@
             }
         }, 30000);
 
-        // ================= النوافذ المنبثقة الاحترافية (Cyber Modal System) المخصصة بوعود (Promises) =================
+        // ================= النوافذ المنبثقة الاحترافية =================
         function showCyberModal(type, title, message, defaultValue = '', icon = 'fa-circle-exclamation', color = 'var(--neon-cyan)') {
             return new Promise((resolve) => {
                 const overlay = document.getElementById('cyber-modal-overlay');
@@ -801,7 +876,6 @@
                 };
                 btnCancel.onclick = () => close(false);
 
-                // دعم زر الـ Enter لتجربة مستخدم أسرع
                 inputEl.onkeyup = (e) => {
                     if (e.key === 'Enter') btnConfirm.click();
                 };
@@ -869,7 +943,6 @@
             card.addEventListener('mouseleave', () => { card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`; });
         });
 
-        // تم الترقية لتعمل بطريقة غير متزامنة مع النافذة الجديدة
         async function boardTrain() {
             const nameInput = document.getElementById('passenger-name').value.trim();
             if(!nameInput) { 
@@ -1019,7 +1092,52 @@
             setTimeout(() => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }, 500);
         }
 
-        // ================= محطة 13: نظام الإدارة المتقدم (التفاعل بالـ Cyber Modals) =================
+        // ================= محطة 13: نظام الإدارة والنسخة الكربونية =================
+        
+        // دالة المزامنة وتغيير الحجم للنسخة الكربونية (لجعلها مطابقة 100%)
+        function resizeCarbonCopy() {
+            const wrapper = document.getElementById('carbon-scale-wrapper');
+            const content = document.getElementById('carbon-scale-content');
+            if(wrapper && content) {
+                const scale = wrapper.clientWidth / 950;
+                content.style.transform = `scale(${scale})`;
+            }
+        }
+        window.addEventListener('resize', resizeCarbonCopy);
+
+        // التحديث السحري للشهادة (ما لا تراه)
+        function updateCarbonCopy(name, date) {
+            const originalCert = document.getElementById('cert-box');
+            const contentContainer = document.getElementById('carbon-scale-content');
+            
+            if(!contentContainer || !originalCert) return;
+            
+            // استنساخ عنصر الشهادة الأصلي تماماً
+            contentContainer.innerHTML = originalCert.outerHTML;
+            const clonedCert = contentContainer.querySelector('.cert-container');
+            
+            if(clonedCert) {
+                clonedCert.style.display = 'flex';
+                clonedCert.style.margin = '0';
+                clonedCert.style.boxShadow = 'none';
+                clonedCert.style.outline = 'none';
+                clonedCert.id = 'cloned-cert-preview'; 
+                
+                const nameEl = clonedCert.querySelector('#cert-name-display');
+                const dateEl = clonedCert.querySelector('#cert-date-display');
+                
+                if(nameEl) {
+                    nameEl.innerText = name || 'نموذج معاينة';
+                    nameEl.id = ''; // إزالة الآيدي لمنع التضارب
+                }
+                if(dateEl) {
+                    dateEl.innerText = date || '---';
+                    dateEl.id = '';
+                }
+            }
+            resizeCarbonCopy();
+        }
+
         async function checkAdmin() {
             if(document.getElementById('admin-pass').value === 'admin') {
                 document.getElementById('admin-login-area').style.display = 'none';
@@ -1039,7 +1157,7 @@
 
             let list = document.getElementById('students-list');
             list.innerHTML = dataList.length === 0 ? `<tr><td colspan="4" style="color:#aaa;">لا توجد بيانات حالياً</td></tr>` : dataList.map(s => `
-                <tr>
+                <tr ${s.completed ? `onmouseover="updateCarbonCopy('${s.name}', '${s.date.split(' ')[0]}')"` : ''} style="transition: background 0.3s; ${s.completed ? 'cursor: pointer;' : ''}" title="${s.completed ? 'مرر الماوس لمعاينة الشهادة كربونياً بالأسفل' : ''}">
                     <td><strong>${s.name}</strong></td>
                     <td><small style="color: #ccc">${s.date}</small></td>
                     <td><span style="color: ${s.completed ? 'var(--success-green)' : 'var(--alert-red)'}; font-weight: bold;">
@@ -1049,6 +1167,7 @@
                         <button class="action-btn btn-toggle" onclick="toggleStudentStatus('${s.id}')" title="تبديل الحالة"><i class="fa-solid fa-rotate"></i></button>
                         <button class="action-btn btn-edit" onclick="editStudent('${s.id}')" title="تعديل الاسم"><i class="fa-solid fa-pen"></i></button>
                         <button class="action-btn btn-delete" onclick="deleteStudent('${s.id}')" title="حذف السجل"><i class="fa-solid fa-trash"></i></button>
+                        ${s.completed ? `<button class="action-btn btn-view-cert" onclick="viewStudentCert('${s.name}')" title="الذهاب للشهادة"><i class="fa-solid fa-award"></i></button>` : ''}
                     </td>
                 </tr>
             `).join('');
@@ -1060,6 +1179,9 @@
                 data: { labels: ['أكملوا الرحلة', 'لم يكملوا'], datasets: [{ data: [completedCount, pendingCount], backgroundColor: ['#00e676', '#ff2a5f'], borderWidth: 2, borderColor: '#0a192f' }] },
                 options: { plugins: { legend: { position: 'bottom', labels: { color: '#fff', font: { family: "'Cairo', sans-serif", size: 14 } } } }, cutout: '65%' }
             });
+
+            // توليد نسخة كربونية مبدئية عند فتح الإدارة
+            setTimeout(() => { updateCarbonCopy('نموذج مبدئي', '---'); }, 500);
         }
 
         let debounceTimer;
@@ -1179,6 +1301,29 @@
             reader.readAsText(file);
         }
 
+        function viewStudentCert(name) {
+            passengerName = name;
+            oathSigned = true; 
+            
+            const nameDisplay = document.getElementById('cert-name-display'); 
+            nameDisplay.innerText = name;
+            
+            if(name.length > 30) nameDisplay.style.fontSize = "2.2rem"; 
+            else if(name.length > 20) nameDisplay.style.fontSize = "2.8rem"; 
+            else nameDisplay.style.fontSize = "3.5rem";
+            
+            document.getElementById('cert-date-display').innerText = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+            
+            nav('station-12', 'الاعتماد الدولي');
+            
+            document.getElementById('cert-box').style.display = 'flex'; 
+            document.getElementById('print-btn').style.display = 'inline-flex'; 
+            document.getElementById('to-cert-btn').style.display = 'none';
+            
+            showToast("تم جلب شهادة الطالب: " + name, "success", "fa-medal");
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+        }
+
         // ================= خلفية القطار =================
         const canvas = document.getElementById('trainCanvas'), ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -1193,4 +1338,3 @@
     </script>
 </body>
 </html>
-

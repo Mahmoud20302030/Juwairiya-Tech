@@ -591,7 +591,7 @@
             <h2 class="section-title">المحاكاة <span>السلوكية العميقة</span></h2>
             <div class="glass-panel">
                 <div class="story-screen" id="story-screen">
-                    <div class="story-text" id="story-text">أنت الآن بعد يوم دراسي طويل. أصدقاؤك يطلبون منك الانضمام لمباراة سريعة عبر الإنترنت. ماذا تفعل؟</div>
+                    <div class="story-text" id="story-text">أنت الآن بعد يوم دراسي طويل. أصدقاؤك يطلبون منك الانضمام لمباراة سريعة. ماذا تفعل؟</div>
                     <div class="story-choices" id="story-choices" style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
                         <button class="btn-cyber" style="border-color: var(--alert-red);" onclick="storyAdvance('bad')">ألعب لمدة 5 ساعات</button>
                         <button class="btn-cyber" style="border-color: var(--success-green);" onclick="storyAdvance('good')">أعتذر وأنجز واجباتي</button>
@@ -974,7 +974,7 @@
                 text.innerText = 'الشبكة مستقرة ومشفرة';
                 text.style.color = 'var(--success-green)';
             } else if(status === 'offline') {
-                text.innerText = 'الشبكة مقطوعة (أوفلاين)';
+                text.innerText = 'الشبكة مقطوعة';
                 text.style.color = 'var(--alert-red)';
             } else if(status === 'error') {
                 text.innerText = 'خطأ - جاري استعادة الاتصال';
@@ -1275,6 +1275,20 @@
             if (secretKeys.length > secretCode.length) secretKeys.shift();
             if (secretKeys.join('') === secretCode && !godModeActive) {
                 activateGodMode();
+            }
+        });
+
+        // ================= زناد مخفي لشاشات اللمس =================
+        let logoTapCount = 0;
+        let logoTapTimer;
+        document.getElementById('main-logo').addEventListener('click', (e) => {
+            logoTapCount++;
+            clearTimeout(logoTapTimer);
+            if (logoTapCount >= 5) {
+                if (!godModeActive) activateGodMode();
+                logoTapCount = 0;
+            } else {
+                logoTapTimer = setTimeout(() => { logoTapCount = 0; }, 1000);
             }
         });
 
